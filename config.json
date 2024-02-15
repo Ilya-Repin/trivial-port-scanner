@@ -1,0 +1,33 @@
+{
+  "reports_dir": "scanner_reports",
+  "hosts": [
+    {
+      "host": "127.0.0.1",
+      "single_ports": [22, 443, 1111, 8080, 4444, 8181],
+      "port_ranges": [
+        {
+          "start_port": 100,
+          "end_port": 110
+        },
+        {
+          "start_port": 1120,
+          "end_port": 1130
+        }
+      ]
+    },
+    {
+      "host": "192.168.1.1",
+      "single_ports": [22, 443, 8080, 8181],
+      "port_ranges": [
+        {
+          "start_port": 100,
+          "end_port": 110
+        },
+        {
+          "start_port": 1120,
+          "end_port": 1130
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 #include <fstream>
 #include <filesystem>
 #include <thread>
+#include "../util/logger/logger.h"
 
 namespace app {
 
@@ -10,23 +11,29 @@ using namespace std::literals;
 
 Application::Application(boost::asio::io_context &io_context) : io_context(io_context) {}
 
-void Application::ScanHosts(const std::unordered_map<std::string, std::vector<scanner::PortRange>> &hosts) {
+void Application::ScanHosts(const std::unordered_map<std::string, scanner::HostConfig> &hosts) {
   std::vector<std::jthread> threads;
   for (const auto &host : hosts) {
 
     threads.push_back(std::jthread([this, host]() {
-      std::cout << "scanning host "s + host.first + " began"s << std::endl; // TODO Remove couts
+      logger::LogInfo(fmt::format("Scanning host {} started", host.first));
       scanner::PortScanner scanner(io_context);
-      std::map<int, scanner::PortScanningResult> result = scanner.ScanPortRanges(host.first, host.second);
 
-      if (!std::filesystem::exists("./scanner_reports/"s)) {
-        std::filesystem::create_directory("./scanner_reports/"s);
+      std::map<int, scanner::PortScanningResult> result;
+
+      scanner.ScanSinglePorts(host.first, host.second.single_ports, result);
+      scanner.ScanPortRanges(host.first, host.second.port_ranges, result);
+
+
+      if (!std::filesystem::exists(fmt::format("./{}/", reports_dir_))) {
+        std::filesystem::create_directory(fmt::format("./{}/", reports_dir_));
       }
 
-      std::string filename = "./scanner_reports/"s + host.first + "_report.txt"s;
+      std::string filename = fmt::format("./{}/{}_report.txt", reports_dir_, host.first);
       std::ofstream outfile(filename);
+
       if (!outfile.is_open()) {
-        std::cerr << "Error: Failed to open file for writing"s << std::endl;
+        logger::LogError("Error: Failed to open file for writing"sv);
         return;
       }
 
@@ -34,10 +41,14 @@ void Application::ScanHosts(const std::unordered_map<std::string, std::vector<sc
         std::string result_str = port_report.second.is_open ? "OPENED" : "CLOSED";
         outfile << "TCP " << host.first << " " << port_report.first << " " << result_str << std::endl;
       }
-      std::cout << "scanning host "s + host.first + " finished"s << std::endl;
 
+      logger::LogInfo(fmt::format("Scanning host {} finished. Report in {}", host.first, filename));
     }));
   }
+}
+
+void Application::SetReportsDir(std::string reports_dir) {
+  reports_dir_ = reports_dir;
 }
 
 } // namespace app

@@ -6,15 +6,16 @@
 
 namespace app {
 
-
 class Application {
  public:
   explicit Application(boost::asio::io_context &io_context);
 
-  void ScanHosts(const std::unordered_map<std::string, std::vector<scanner::PortRange>>& hosts);
+  void ScanHosts(const std::unordered_map<std::string, scanner::HostConfig>& hosts);
+  void SetReportsDir(std::string reports_dir);
 
  private:
   boost::asio::io_context &io_context;
+  std::string reports_dir_;
 };
 
 }
