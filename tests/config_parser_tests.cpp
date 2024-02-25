@@ -22,8 +22,8 @@ TEST_CASE_METHOD(DefaultConfigParser, "Valid-Config", "[ConfigParser]") {
   REQUIRE(scanning_config.hosts.at("127.0.0.1").single_ports.size() == 3);
   REQUIRE(scanning_config.hosts.at("127.0.0.1").port_ranges.size() == 2);
 
-  REQUIRE(scanning_config.hosts.at("192.168.1.1").single_ports.size() == 3);
-  REQUIRE(scanning_config.hosts.at("192.168.1.1").port_ranges.size() == 2);
+  REQUIRE(scanning_config.hosts.at("example.com").single_ports.size() == 3);
+  REQUIRE(scanning_config.hosts.at("example.com").port_ranges.size() == 2);
 }
 
 TEST_CASE_METHOD(DefaultConfigParser, "Invalid-Config", "[ConfigParser]") {

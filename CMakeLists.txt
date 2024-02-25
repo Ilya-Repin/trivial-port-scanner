@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 
-project(simple-port-scanner CXX)
+project(trivial-port-scanner CXX)
 set(CMAKE_CXX_STANDARD 20)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -30,9 +30,9 @@ add_library(Scanner STATIC
 
 target_link_libraries(Scanner PRIVATE Threads::Threads CONAN_PKG::boost CONAN_PKG::fmt)
 
-add_executable(simple_port_scanner src/main.cpp)
+add_executable(trivial_port_scanner src/main.cpp)
 
-target_link_libraries(simple_port_scanner PRIVATE Scanner Logger Threads::Threads CONAN_PKG::boost)
+target_link_libraries(trivial_port_scanner PRIVATE Scanner Logger Threads::Threads CONAN_PKG::boost)
 
 enable_testing()
 
