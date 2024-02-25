@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <filesystem>
+#include <iostream>
 #include <boost/program_options.hpp>
 
 namespace util  {
@@ -13,4 +14,4 @@ struct Args {
 
 std::optional<Args> ParseCommandLine(int argc, const char *const argv[]);
 
-}
+}  // namespace util

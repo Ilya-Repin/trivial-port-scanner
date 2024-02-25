@@ -1,9 +1,4 @@
-#include "application.h"
-#include <iostream>
-#include <fstream>
-#include <filesystem>
-#include <thread>
-#include "../util/logger/logger.h"
+#include "app/application.h"
 
 namespace app {
 
@@ -11,10 +6,10 @@ using namespace std::literals;
 
 Application::Application(boost::asio::io_context &io_context) : io_context(io_context) {}
 
-void Application::ScanHosts(const std::unordered_map<std::string, scanner::HostConfig> &hosts) {
+void Application::ScanHosts(const std::unordered_map<std::string, util::HostConfig> &hosts) {
   std::vector<std::jthread> threads;
-  for (const auto &host : hosts) {
 
+  for (const auto &host : hosts) {
     threads.push_back(std::jthread([this, host]() {
       logger::LogInfo(fmt::format("Scanning host {} started", host.first));
       scanner::PortScanner scanner(io_context);
@@ -23,7 +18,6 @@ void Application::ScanHosts(const std::unordered_map<std::string, scanner::HostC
 
       scanner.ScanSinglePorts(host.first, host.second.single_ports, result);
       scanner.ScanPortRanges(host.first, host.second.port_ranges, result);
-
 
       if (!std::filesystem::exists(fmt::format("./{}/", reports_dir_))) {
         std::filesystem::create_directory(fmt::format("./{}/", reports_dir_));
@@ -47,8 +41,7 @@ void Application::ScanHosts(const std::unordered_map<std::string, scanner::HostC
   }
 }
 
-void Application::SetReportsDir(std::string reports_dir) {
+void Application::SetReportsDir(const std::string& reports_dir) {
   reports_dir_ = reports_dir;
 }
-
-} // namespace app
+}  // namespace app

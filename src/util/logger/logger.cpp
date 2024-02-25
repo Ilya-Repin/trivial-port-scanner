@@ -1,4 +1,4 @@
-#include "logger.h"
+#include "util/logger/logger.h"
 
 namespace {
 
@@ -35,4 +35,4 @@ void LogFatal(std::string_view msg) {
 void LogTrace(std::string_view msg) {
   BOOST_LOG_TRIVIAL(trace) << msg;
 }
-}
+}  // namespace logger

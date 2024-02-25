@@ -1,0 +1,9 @@
+{
+  "reports_dir": "test_reports",
+  "hosts": [
+    {
+      "host": "127.0.0.1",
+      "single_ports": [1111, 8080]
+    }
+  ]
+}

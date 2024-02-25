@@ -1,0 +1,18 @@
+{
+  "reports_dir": "test_reports",
+  "hosts": [
+    {
+      "host": "127.0.0.1",
+      "port_ranges": [
+        {
+          "from": 100,
+          "to": 110
+        },
+        {
+          "from": 1120,
+          "to": 1130
+        }
+      ]
+    }
+  ]
+}

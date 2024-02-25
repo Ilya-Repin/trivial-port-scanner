@@ -1,5 +1,4 @@
-#include "command_line_parser.h"
-#include <iostream>
+#include "util/program_options/command_line_parser.h"
 
 namespace util {
 
@@ -32,4 +31,4 @@ std::optional<Args> ParseCommandLine(int argc, const char *const argv[]) {
 
   return args;
 }
-} // namespace util
+}  // namespace util

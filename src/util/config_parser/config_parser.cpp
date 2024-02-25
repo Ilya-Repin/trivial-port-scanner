@@ -1,6 +1,4 @@
-#include "config_parser.h"
-#include "../logger/logger.h"
-#include <boost/property_tree/json_parser.hpp>
+#include "util/config_parser/config_parser.h"
 
 namespace util {
 
@@ -17,7 +15,7 @@ ScanningConfig ConfigParser::Parse(const std::string& file_path) {
     return scanning_config;
   }
 
-  scanning_config.reports_dir = pt.get<std::string>("reports_dir");
+  scanning_config.reports_dir = pt.get<std::string>("reports_dir", "scanner_reports");
 
   for (const auto& host : pt.get_child("hosts")) {
     std::string hostname = host.second.get<std::string>("host");
@@ -27,17 +25,23 @@ ScanningConfig ConfigParser::Parse(const std::string& file_path) {
       continue;
     }
 
-    scanner::HostConfig host_config;
+    HostConfig host_config;
 
-    for (const auto& port_obj : host.second.get_child("port_ranges")) {
-      scanner::PortRange pr;
-      pr.start = port_obj.second.get("start_port", 0);
-      pr.end = port_obj.second.get("end_port", 65535);
-      host_config.port_ranges.push_back(pr);
+    if (host.second.count("port_ranges")) {
+      for (const auto& port_range : host.second.get_child("port_ranges")) {
+        PortRange pr;
+
+        pr.start = port_range.second.get("from", 0);
+        pr.end = port_range.second.get("to", 65535);
+
+        host_config.port_ranges.push_back(pr);
+      }
     }
 
-    for (const auto& port : host.second.get_child("single_ports")) {
-      host_config.single_ports.push_back(port.second.get_value<int>());
+    if (host.second.count("single_ports")) {
+      for (const auto& port : host.second.get_child("single_ports")) {
+        host_config.single_ports.push_back(port.second.get_value<int>());
+      }
     }
 
     scanning_config.hosts[hostname] = host_config;
@@ -51,8 +55,12 @@ bool ConfigParser::IsValidTree(const boost::property_tree::ptree& pt) const {
     return false;
   }
 
-  // TODO Добавить проверок
+  for (const auto& host : pt.get_child("hosts")) {
+    if (host.second.count("host") == 0) {
+      return false;
+    }
+  }
 
   return true;
 }
-}
+}  // namespace util

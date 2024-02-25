@@ -1,0 +1,8 @@
+{
+  "reports_dir": "test_reports",
+  "hosts": [
+    {
+      "host": "example.com"
+    }
+  ]
+}
