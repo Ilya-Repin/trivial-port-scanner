@@ -8,11 +8,11 @@ Application::Application(boost::asio::io_context &io_context) : io_context(io_co
 
 void Application::ScanHosts(const std::unordered_map<std::string, util::HostConfig> &hosts) {
   std::vector<std::jthread> threads;
+  scanner::PortScanner scanner(io_context);
 
   for (const auto &host : hosts) {
-    threads.push_back(std::jthread([this, host]() {
+    threads.push_back(std::jthread([this, &scanner, host]() {
       logger::LogInfo(fmt::format("Scanning host {} started", host.first));
-      scanner::PortScanner scanner(io_context);
 
       std::map<int, scanner::PortScanningResult> result;
 
