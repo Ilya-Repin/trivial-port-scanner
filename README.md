@@ -67,7 +67,7 @@ Trivial Port Scanner - инструмент для сканирования TCP 
 
     При запуске программы укажите расположение конфигурационного файла
     ```shell
-    ./trivial_port_scanner --config-file config.json
+    build-release/bin/trivial_port_scanner --config-file config.json
     ```
    Тесты можно запустить при помощи
     ```shell

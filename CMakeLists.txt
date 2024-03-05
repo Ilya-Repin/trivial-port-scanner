@@ -32,7 +32,7 @@ target_link_libraries(Scanner PRIVATE Threads::Threads CONAN_PKG::boost CONAN_PK
 
 add_executable(trivial_port_scanner src/main.cpp)
 
-target_link_libraries(trivial_port_scanner PRIVATE Scanner Logger Threads::Threads CONAN_PKG::boost)
+target_link_libraries(trivial_port_scanner PRIVATE Scanner Logger Threads::Threads CONAN_PKG::boost CONAN_PKG::fmt)
 
 enable_testing()
 
