@@ -71,5 +71,5 @@ Trivial Port Scanner - инструмент для сканирования TCP 
     ```
    Тесты можно запустить при помощи
     ```shell
-    ctest --extra-verbose --test-dir build
+    ctest --extra-verbose --test-dir build-release
     ```

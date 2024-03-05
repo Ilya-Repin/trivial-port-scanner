@@ -15,7 +15,7 @@ add_library(Logger STATIC
         src/util/logger/logger.cpp
         src/util/logger/logger.h)
 
-target_link_libraries(Logger PRIVATE Threads::Threads CONAN_PKG::boost)
+target_link_libraries(Logger PUBLIC Threads::Threads CONAN_PKG::boost)
 
 add_library(Scanner STATIC
         src/util/config_parser/config_parser.cpp
@@ -28,11 +28,11 @@ add_library(Scanner STATIC
         src/app/application.cpp
         src/app/application.h)
 
-target_link_libraries(Scanner PRIVATE Threads::Threads CONAN_PKG::boost CONAN_PKG::fmt)
+target_link_libraries(Scanner PUBLIC Threads::Threads CONAN_PKG::boost CONAN_PKG::fmt)
 
 add_executable(trivial_port_scanner src/main.cpp)
 
-target_link_libraries(trivial_port_scanner PRIVATE Scanner Logger Threads::Threads CONAN_PKG::boost CONAN_PKG::fmt)
+target_link_libraries(trivial_port_scanner PRIVATE Scanner Logger)
 
 enable_testing()
 
@@ -42,6 +42,6 @@ add_executable(parser_test
         src/util/config_parser/config_parser.cpp
         tests/config_parser_tests.cpp)
 
-target_link_libraries(parser_test PRIVATE CONAN_PKG::catch2 Threads::Threads CONAN_PKG::boost Logger)
+target_link_libraries(parser_test PRIVATE CONAN_PKG::catch2 Logger)
 
 add_test(NAME PARSER_TEST COMMAND parser_test)
