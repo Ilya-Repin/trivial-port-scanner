@@ -16,6 +16,11 @@ Trivial Port Scanner - инструмент для сканирования TCP 
     cmake .. -DCMAKE_BUILD_TYPE=Release
     cmake --build . --target all
     ```
+    Возможна сборка в Docker контейнере
+    ```shell
+    sudo docker build -t trivial_port_scanner .
+    sudo docker run --rm -it --net=host trivial_port_scanner
+    ```
 
 2. **Настройка конфигурационного файла:**
 
@@ -69,7 +74,12 @@ Trivial Port Scanner - инструмент для сканирования TCP 
     ```shell
     build-release/bin/trivial_port_scanner --config-file config.json
     ```
-   Тесты можно запустить при помощи
+    Тесты можно запустить при помощи
     ```shell
     ctest --extra-verbose --test-dir build-release
+    ```
+
+    Для запуска в Docker контейнере введите
+    ```shell
+    ./trivial_port_scanner -c ../config.json
     ```
